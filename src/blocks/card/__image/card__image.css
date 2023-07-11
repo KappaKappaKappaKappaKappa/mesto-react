@@ -5,6 +5,7 @@
     border-top-right-radius: 10px;
     display: block;
     object-fit: cover;
+    background-size: cover;
 }
 
 .card__image:hover{

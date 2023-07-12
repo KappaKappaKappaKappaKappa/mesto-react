@@ -47,7 +47,7 @@ function App() {
                     onCardClick={handleCardClick}
                 />
 
-                <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+                <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>
                     <input className="pop-up__form-input pop-up__form-input_input_name" id='name-input' name="username"
                         type="text" required minLength="2" maxLength="40" placeholder="Укажите имя" />
                     <span className="pop-up__form-input-error pop-up__form-name-input-error"></span>
@@ -57,7 +57,7 @@ function App() {
                     <span className="pop-up__form-input-error pop-up__form-profession-input-error"></span>
                 </PopupWithForm>
 
-                <PopupWithForm title='Новое место' name='add-cards' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+                <PopupWithForm title='Новое место' name='add-cards' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} textBtnSave='Создать'>
                     <input className="pop-up__form-input pop-up__form-input_input_place" id="place-input" name="title"
                         type="text" placeholder="Название" required minLength="2" maxLength="30" />
                     <span className="pop-up__form-input-error pop-up__form-place-input-error"></span>
@@ -67,11 +67,10 @@ function App() {
                 </PopupWithForm>
 
 
-                <PopupWithForm title='Вы уверены?' name='delete-submit'>
-                    <button className="pop-up__form-button-save">Да</button>
+                <PopupWithForm title='Вы уверены?' name='delete-submit' textBtnSave='Да'>
                 </PopupWithForm>
 
-                <PopupWithForm title='Обновить аватар' name='new-avatar-form' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+                <PopupWithForm title='Обновить аватар' name='new-avatar-form' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>
                     <input className="pop-up__form-input pop-up__form-input_input_avatar-url" id="avatar-url-input"
                         name="avatar" type="url" placeholder="Ссылка на новый аватар" required />
                     <span className="pop-up__form-input-error pop-up__form-avatar-url-input-error"></span>

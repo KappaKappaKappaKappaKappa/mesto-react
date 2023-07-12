@@ -39,7 +39,6 @@ function App() {
 
     return (
         <div className="body">
-            <div className="App">
                 <Header />
                 <Main
                     onEditProfile = {handleEditProfileClick}
@@ -84,7 +83,6 @@ function App() {
                  />
 
                 <Footer />
-            </div>
         </div>
     );
 }

@@ -36,7 +36,7 @@ function Main({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) {
 
             <section className="profile">
                 <button className="profile__avatar-btn" onClick={onEditAvatar}>
-                    <img className="profile__avatar" style={{ backgroundImage: `url(${userAvatar})` }} />
+                    <div className="profile__avatar" style={{ backgroundImage: `url(${userAvatar})` }}></div>
                 </button>
                 <div className="profile-info">
                     <div className="profile-info__container">

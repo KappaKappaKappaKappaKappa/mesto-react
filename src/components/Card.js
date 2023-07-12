@@ -8,7 +8,7 @@ function Card({ card, onCardClick }) {
         <li className="cards__list-card" key={card._id}>
             <article className="card">
                 <button className="card__trash" type="button"></button>
-                <img className="card__image" style={{ backgroundImage: `url(${card.link})` }} onClick={handleClick} />
+                <div className="card__image" style={{ backgroundImage: `url(${card.link})` }} onClick={handleClick}></div>
                 <div className="card__info">
                     <h2 className="card__place">{card.name}</h2>
                     <div className="card__like-container">

@@ -4,6 +4,8 @@ import Main from './Main.js';
 import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
+import api from '../utils/api.js';
+import {CurrentUserContext} from '../contexts/CurrentUserContext'
 
 function App() {
 
@@ -11,7 +13,23 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
 
+    const [currentUser, setCurrentUser] = useState(null)
+
+    React.useEffect(() => {
+        api.getInfo()
+            .then((userInfo) => {
+                setCurrentUser(userInfo);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    },[])
+
     const [selectedCard, setSelectedCard] = useState(null);
+
+    const handleCardLike = (card) => {
+        const isLiked = card.likes.some(i => i._id === CurrentUserContext._id);
+    }
 
     const handleEditProfileClick = () => {
         setIsEditProfilePopupOpen(true);
@@ -37,12 +55,13 @@ function App() {
     }
 
     return (
-        <div className="body">
+        <CurrentUserContext.Provider value={currentUser}>
+            <div className="body">
                 <Header />
                 <Main
-                    onEditProfile = {handleEditProfileClick}
-                    onAddPlace = {handleAddPlaceClick}
-                    onEditAvatar = {handleEditAvatarClick}
+                    onEditProfile={handleEditProfileClick}
+                    onAddPlace={handleAddPlaceClick}
+                    onEditAvatar={handleEditAvatarClick}
                     onCardClick={handleCardClick}
                 />
 
@@ -76,12 +95,13 @@ function App() {
                 </PopupWithForm>
 
                 <ImagePopup
-                card = {selectedCard}
-                onClose = {closeAllPopups}
-                 />
+                    card={selectedCard}
+                    onClose={closeAllPopups}
+                />
 
                 <Footer />
-        </div>
+            </div>
+        </CurrentUserContext.Provider>
     );
 }
 

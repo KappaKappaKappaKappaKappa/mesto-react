@@ -8,13 +8,15 @@ import api from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
 function App() {
-
+    //Создание стейт-переменных открытия-закрытия popup'ов
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
 
+    //Создание стейта текущего пользователя
     const [currentUser, setCurrentUser] = useState(null)
 
+    //Получение данных текущего пользователя
     React.useEffect(() => {
         api.getInfo()
             .then((userInfo) => {
@@ -25,9 +27,10 @@ function App() {
             })
     }, [])
 
-    
+    //Создание стейта карточек
     const [cards, setCards] = useState([])
 
+    //Получение карточек
     React.useEffect(() => {
         api.getCards()
             .then((cards) => {
@@ -38,36 +41,52 @@ function App() {
             })
     }, [])
 
+    //Создание стейта выбранной карточки
     const [selectedCard, setSelectedCard] = useState(null);
 
+
     const handleCardLike = (card) => {
+        //Проверка наличия лайка на карточке
         const isLiked = card.likes.some(i => i._id === currentUser._id);
 
+        //Запрос обновленных данных карточки
         api.changeLikeCardStatus(card._id, !isLiked)
-        .then((newCard) => {
-            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-        });
+            .then((newCard) => {
+                setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+            });
     }
 
+    const handleCardDelete = (card) => {
+        api.deleteCard(card._id)
+        .then(() => {
+            const updateCards = cards.filter((c) => c._id !== card._id);
+            setCards(updateCards);
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    } 
+
+    // Функция обработчик нажатия на открытие popup
     const handleEditProfileClick = () => {
         setIsEditProfilePopupOpen(true);
     }
-
+    // Функция обработчик нажатия на открытие popup
     const handleEditAvatarClick = () => {
         setIsEditAvatarPopupOpen(true);
     }
-
+    // Функция обработчик нажатия на открытие popup
     const handleAddPlaceClick = () => {
         setIsAddPlacePopupOpen(true);
     }
-
+    // Функция закрытия всех popup'ов
     const closeAllPopups = () => {
         setIsEditAvatarPopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditProfilePopupOpen(false);
         setSelectedCard(null);
     }
-
+    //Функция обновления стейт-переменной выбранной карточки
     const handleCardClick = (card) => {
         setSelectedCard(card);
     }
@@ -83,6 +102,7 @@ function App() {
                     onCardClick={handleCardClick}
                     onCardLike={handleCardLike}
                     cards={cards}
+                    onCardDelete = {handleCardDelete}
                 />
 
                 <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>

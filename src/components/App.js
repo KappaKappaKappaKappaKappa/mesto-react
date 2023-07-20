@@ -5,7 +5,7 @@ import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
-import {CurrentUserContext} from '../contexts/CurrentUserContext'
+import { CurrentUserContext } from '../contexts/CurrentUserContext'
 
 function App() {
 
@@ -23,12 +23,30 @@ function App() {
             .catch((error) => {
                 console.log(error);
             })
-    },[])
+    }, [])
+
+    
+    const [cards, setCards] = useState([])
+
+    React.useEffect(() => {
+        api.getCards()
+            .then((cards) => {
+                setCards(cards);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }, [])
 
     const [selectedCard, setSelectedCard] = useState(null);
 
     const handleCardLike = (card) => {
-        const isLiked = card.likes.some(i => i._id === CurrentUserContext._id);
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+
+        api.changeLikeCardStatus(card._id, !isLiked)
+        .then((newCard) => {
+            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        });
     }
 
     const handleEditProfileClick = () => {
@@ -63,6 +81,8 @@ function App() {
                     onAddPlace={handleAddPlaceClick}
                     onEditAvatar={handleEditAvatarClick}
                     onCardClick={handleCardClick}
+                    onCardLike={handleCardLike}
+                    cards={cards}
                 />
 
                 <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>

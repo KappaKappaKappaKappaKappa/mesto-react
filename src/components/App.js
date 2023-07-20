@@ -5,7 +5,8 @@ import Footer from './Footer.js';
 import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
-import { CurrentUserContext } from '../contexts/CurrentUserContext'
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup'
 
 function App() {
     //Создание стейт-переменных открытия-закрытия popup'ов
@@ -40,7 +41,7 @@ function App() {
                 console.log(error);
             })
     }, [])
-
+    
     //Создание стейта выбранной карточки
     const [selectedCard, setSelectedCard] = useState(null);
 
@@ -58,14 +59,14 @@ function App() {
 
     const handleCardDelete = (card) => {
         api.deleteCard(card._id)
-        .then(() => {
-            const updateCards = cards.filter((c) => c._id !== card._id);
-            setCards(updateCards);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-    } 
+            .then(() => {
+                const updateCards = cards.filter((c) => c._id !== card._id);
+                setCards(updateCards);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
     // Функция обработчик нажатия на открытие popup
     const handleEditProfileClick = () => {
@@ -91,6 +92,17 @@ function App() {
         setSelectedCard(card);
     }
 
+    const handleUpdateUser = (newUserData) => {
+        api.setUserInfo(newUserData)
+        .then((res) => {
+            setCurrentUser(res);
+            closeAllPopups();
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    }
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="body">
@@ -102,18 +114,10 @@ function App() {
                     onCardClick={handleCardClick}
                     onCardLike={handleCardLike}
                     cards={cards}
-                    onCardDelete = {handleCardDelete}
+                    onCardDelete={handleCardDelete}
                 />
 
-                <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>
-                    <input className="pop-up__form-input pop-up__form-input_input_name" id='name-input' name="username"
-                        type="text" required minLength="2" maxLength="40" placeholder="Укажите имя" />
-                    <span className="pop-up__form-input-error pop-up__form-name-input-error"></span>
-                    <input className="pop-up__form-input pop-up__form-input_input_profession" id='profession-input'
-                        name="profession" type="text" required minLength="2" maxLength="200"
-                        placeholder="Укажите чем вы занимаетесь" />
-                    <span className="pop-up__form-input-error pop-up__form-profession-input-error"></span>
-                </PopupWithForm>
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
 
                 <PopupWithForm title='Новое место' name='add-cards' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} textBtnSave='Создать'>
                     <input className="pop-up__form-input pop-up__form-input_input_place" id="place-input" name="title"

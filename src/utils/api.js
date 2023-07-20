@@ -6,7 +6,7 @@ class Api {
     }
 
     _checkAnswer(res) {
-        return res.ok ? res.json() : Promise.reject
+        return res.ok ? res.json() : Promise.reject()
     }
 
     getInfo() {
@@ -32,8 +32,8 @@ class Api {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
-                name: data.username,
-                about: data.profession
+                name: data.name,
+                about: data.about
             })
         })
             .then(this._checkAnswer)

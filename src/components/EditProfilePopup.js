@@ -28,7 +28,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     const handleChangeDescriprion = (e) => {
         setDescription(e.target.value);
     }
-
+    //Функция получения значения input через рефы
     const handleSubmit = (e) => {
         e.preventDefault();
         onUpdateUser({

@@ -6,7 +6,9 @@ import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import EditProfilePopup from './EditProfilePopup'
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 function App() {
     //Создание стейт-переменных открытия-закрытия popup'ов
@@ -41,7 +43,7 @@ function App() {
                 console.log(error);
             })
     }, [])
-    
+
     //Создание стейта выбранной карточки
     const [selectedCard, setSelectedCard] = useState(null);
 
@@ -56,7 +58,7 @@ function App() {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
             });
     }
-
+    //Функция удаления карточки и обновления стейта
     const handleCardDelete = (card) => {
         api.deleteCard(card._id)
             .then(() => {
@@ -91,16 +93,38 @@ function App() {
     const handleCardClick = (card) => {
         setSelectedCard(card);
     }
-
+    //Функция отправки и обновления данных пользователя
     const handleUpdateUser = (newUserData) => {
         api.setUserInfo(newUserData)
-        .then((res) => {
-            setCurrentUser(res);
-            closeAllPopups();
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                setCurrentUser(res);
+                closeAllPopups();
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    //Функция отправки и обновления аватара
+    const handleUpdateAvatar = (newUserAvatar) => {
+        api.setNewAvatar(newUserAvatar)
+            .then((newAvatar) => {
+                setCurrentUser(newAvatar);
+                closeAllPopups();
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+    //Функция отправки и добавления новой карточки
+    const handleAddPlaceSubmit = (newCard) => {
+        api.addCard(newCard)
+            .then((newCards) => {
+                setCards([newCards, ...cards]);
+                closeAllPopups();
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     return (
@@ -118,30 +142,12 @@ function App() {
                 />
 
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
-                <PopupWithForm title='Новое место' name='add-cards' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} textBtnSave='Создать'>
-                    <input className="pop-up__form-input pop-up__form-input_input_place" id="place-input" name="title"
-                        type="text" placeholder="Название" required minLength="2" maxLength="30" />
-                    <span className="pop-up__form-input-error pop-up__form-place-input-error"></span>
-                    <input className="pop-up__form-input pop-up__form-input_input_link" id="link-input" name="link" type="url"
-                        placeholder="Ссылка на картинку" required />
-                    <span className="pop-up__form-input-error pop-up__form-link-input-error"></span>
-                </PopupWithForm>
+                <PopupWithForm title='Вы уверены?' name='delete-submit' textBtnSave='Да' />
 
-
-                <PopupWithForm title='Вы уверены?' name='delete-submit' textBtnSave='Да'>
-                </PopupWithForm>
-
-                <PopupWithForm title='Обновить аватар' name='new-avatar-form' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} textBtnSave='Сохранить'>
-                    <input className="pop-up__form-input pop-up__form-input_input_avatar-url" id="avatar-url-input"
-                        name="avatar" type="url" placeholder="Ссылка на новый аватар" required />
-                    <span className="pop-up__form-input-error pop-up__form-avatar-url-input-error"></span>
-                </PopupWithForm>
-
-                <ImagePopup
-                    card={selectedCard}
-                    onClose={closeAllPopups}
-                />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
                 <Footer />
             </div>

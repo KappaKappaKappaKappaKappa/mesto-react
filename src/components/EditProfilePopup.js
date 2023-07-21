@@ -17,7 +17,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
             setName(currentUser.name);
             setDescription(currentUser.about)
         }
-    }, [currentUser])
+    }, [currentUser, isOpen])
 
     //Функция изменения стейт переменной на текущее значение input
     const handleChangeName = (e) => {
@@ -40,11 +40,11 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
     return (
         <PopupWithForm title='Редактировать профиль' name='edit-profile' isOpen={isOpen} onClose={onClose} textBtnSave='Сохранить' onSubmit={handleSubmit}>
             <input className="pop-up__form-input pop-up__form-input_input_name" id='name-input' name="username"
-                type="text" required minLength="2" maxLength="40" placeholder="Укажите имя" onChange={handleChangeName} />
+                type="text" required minLength="2" maxLength="40" placeholder="Укажите имя" onChange={handleChangeName} value={name} />
             <span className="pop-up__form-input-error pop-up__form-name-input-error"></span>
             <input className="pop-up__form-input pop-up__form-input_input_profession" id='profession-input'
                 name="profession" type="text" required minLength="2" maxLength="200"
-                placeholder="Укажите чем вы занимаетесь" onChange={handleChangeDescriprion} />
+                placeholder="Укажите чем вы занимаетесь" onChange={handleChangeDescriprion} value={description} />
             <span className="pop-up__form-input-error pop-up__form-profession-input-error"></span>
         </PopupWithForm>
     )

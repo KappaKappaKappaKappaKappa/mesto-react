@@ -23,7 +23,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         onCardDelete(card);
     }
     return (
-        <li className="cards__list-card" key={card._id}>
+        <li className="cards__list-card">
             <article className="card">
                 {isOwner && <button className="card__trash" type="button" onClick={handleDeleteClick}></button>}
                 <div className="card__image" style={{ backgroundImage: `url(${card.link})` }} onClick={handleClick}></div>

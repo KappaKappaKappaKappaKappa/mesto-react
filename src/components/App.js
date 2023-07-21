@@ -19,6 +19,12 @@ function App() {
     //Создание стейта текущего пользователя
     const [currentUser, setCurrentUser] = useState(null)
 
+    //Создание стейта карточек
+    const [cards, setCards] = useState([])
+
+    //Создание стейта выбранной карточки
+    const [selectedCard, setSelectedCard] = useState(null);
+
     //Получение данных текущего пользователя
     React.useEffect(() => {
         api.getInfo()
@@ -29,9 +35,6 @@ function App() {
                 console.log(error);
             })
     }, [])
-
-    //Создание стейта карточек
-    const [cards, setCards] = useState([])
 
     //Получение карточек
     React.useEffect(() => {
@@ -44,9 +47,6 @@ function App() {
             })
     }, [])
 
-    //Создание стейта выбранной карточки
-    const [selectedCard, setSelectedCard] = useState(null);
-
 
     const handleCardLike = (card) => {
         //Проверка наличия лайка на карточке
@@ -56,7 +56,10 @@ function App() {
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((newCard) => {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-            });
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
     //Функция удаления карточки и обновления стейта
     const handleCardDelete = (card) => {

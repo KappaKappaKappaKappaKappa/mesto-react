@@ -17,7 +17,10 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
 
     //Создание стейта текущего пользователя
-    const [currentUser, setCurrentUser] = useState(null)
+    const [currentUser, setCurrentUser] = useState({
+        name: 'Загружаем...',
+        about: 'Загружаем...',
+    })
 
     //Создание стейта карточек
     const [cards, setCards] = useState([])

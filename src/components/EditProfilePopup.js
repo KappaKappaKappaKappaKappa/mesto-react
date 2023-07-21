@@ -13,10 +13,8 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
 
     //Эффект обновления стейт-переменных
     useEffect(() => {
-        if (currentUser !== null) {
-            setName(currentUser.name);
-            setDescription(currentUser.about)
-        }
+        setName(currentUser.name);
+        setDescription(currentUser.about)
     }, [currentUser, isOpen])
 
     //Функция изменения стейт переменной на текущее значение input

@@ -1,5 +1,5 @@
 import PopupWithForm from "./PopupWithForm";
-import { React, useRef } from "react";
+import { React, useRef, useEffect } from "react";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isPreloading }) {
 
@@ -15,6 +15,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isPreloading }) {
             link: linkInputRef.current.value,
         })
     }
+
+    useEffect(() => {
+        placeInputRef.current.value = null;
+        linkInputRef.current.value = null;
+    })
 
     return (
         <PopupWithForm title='Новое место' name='add-cards' isOpen={isOpen} onClose={onClose} textBtnSave={isPreloading ? 'Создаем...' : 'Сохранить'} onSubmit={handleSubmit}>

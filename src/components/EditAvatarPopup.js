@@ -1,7 +1,7 @@
 import { React, useRef } from "react";
 import PopupWithForm from "./PopupWithForm";
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isPreloading }) {
 
     //Создания рефа инпут поля
     const avatarInputRef = useRef();
@@ -15,7 +15,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar }) {
     }
 
     return (
-        <PopupWithForm title='Обновить аватар' name='new-avatar-form' isOpen={isOpen} onClose={onClose} textBtnSave='Сохранить' onSubmit={(handleSubmit)}>
+        <PopupWithForm title='Обновить аватар' name='new-avatar-form' isOpen={isOpen} onClose={onClose} textBtnSave={isPreloading ? 'Обновляем...' : 'Сохранить'} onSubmit={(handleSubmit)}>
             <input className="pop-up__form-input pop-up__form-input_input_avatar-url" id="avatar-url-input"
                 name="avatar" type="url" placeholder="Ссылка на новый аватар" required ref={avatarInputRef} />
             <span className="pop-up__form-input-error pop-up__form-avatar-url-input-error"></span>

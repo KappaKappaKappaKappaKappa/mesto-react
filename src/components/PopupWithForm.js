@@ -5,7 +5,7 @@ function PopupWithForm({ title, name, children, isOpen, onClose, textBtnSave, on
                 <form className="pop-up__form" name={name} onSubmit={onSubmit}>
                     <h2 className="pop-up__form-title">{title}</h2>
                     {children}
-                    <button className="pop-up__form-button-save" type="submit" onClick={onClose}>{textBtnSave}</button>
+                    <button className="pop-up__form-button-save" type="submit">{textBtnSave}</button>
                 </form>
                 <button className="pop-up__button-close" type="button" onClick={onClose}></button>
             </div>

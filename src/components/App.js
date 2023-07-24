@@ -33,6 +33,10 @@ function App() {
     //Создание стейта выбранной карточки для удаления
     const [cardToDelete, setCardToDelete] = useState(null);
 
+    //Создание стейта индикатора загрузки данных
+    const [isPreloading, setIsPreloading] = useState(false);
+
+
     //Получение данных текущего пользователя
     React.useEffect(() => {
         api.getInfo()
@@ -99,6 +103,7 @@ function App() {
     }
     //Функция отправки и обновления данных пользователя
     const handleUpdateUser = (newUserData) => {
+        setIsPreloading(true);
         api.setUserInfo(newUserData)
             .then((res) => {
                 setCurrentUser(res);
@@ -107,9 +112,13 @@ function App() {
             .catch((error) => {
                 console.log(error);
             })
+            .finally(() => {
+                setIsPreloading(false);
+            })
     }
     //Функция отправки и обновления аватара
     const handleUpdateAvatar = (newUserAvatar) => {
+        setIsPreloading(true);
         api.setNewAvatar(newUserAvatar)
             .then((newAvatar) => {
                 setCurrentUser(newAvatar);
@@ -118,9 +127,13 @@ function App() {
             .catch((error) => {
                 console.log(error);
             })
+            .finally(() => {
+                setIsPreloading(false);
+            })
     }
     //Функция отправки и добавления новой карточки
     const handleAddPlaceSubmit = (newCard) => {
+        setIsPreloading(true);
         api.addCard(newCard)
             .then((newCards) => {
                 setCards([newCards, ...cards]);
@@ -128,6 +141,9 @@ function App() {
             })
             .catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                setIsPreloading(false);
             })
     }
 
@@ -139,15 +155,19 @@ function App() {
 
     //Функция удаления карточки и обновления стейта
     const handleCardDelete = () => {
+        setIsPreloading(true);
         api.deleteCard(cardToDelete._id)
             .then(() => {
                 const updateCards = cards.filter((c) => c._id !== cardToDelete._id);
                 setCards(updateCards);
                 setIsConfirmDeletePopup(false);
-                setSelectedCard(null)
             })
             .catch((error) => {
                 console.log(error);
+            })
+            .finally(() => {
+                setSelectedCard(null);
+                setIsPreloading(false);
             })
     }
 
@@ -165,11 +185,11 @@ function App() {
                     onClickCardDeleteBtn={handleClickCardDeleteBtn}
                 />
 
-                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
-                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
+                <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} isPreloading={isPreloading} />
+                <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} isPreloading={isPreloading} />
+                <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} isPreloading={isPreloading} />
 
-                <ConfirmDeletePopup isOpen={isConfirmDeletePopup} onClose={closeAllPopups} onSubmit={handleCardDelete} card={selectedCard} />
+                <ConfirmDeletePopup isOpen={isConfirmDeletePopup} onClose={closeAllPopups} onSubmit={handleCardDelete} card={selectedCard} isPreloading={isPreloading} />
 
                 <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen} />
 

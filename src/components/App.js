@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
 import ImagePopup from './ImagePopup.js';
 import api from '../utils/api.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup.js';
 import AddPlacePopup from './AddPlacePopup.js';
+import ConfirmDeletePopup from './ConfirmDeletePopup.js';
 
 function App() {
     //Создание стейт-переменных открытия-закрытия popup'ов
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+    const [isConfirmDeletePopup, setIsConfirmDeletePopup] = useState(false)
+    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
 
     //Создание стейта текущего пользователя
     const [currentUser, setCurrentUser] = useState({
@@ -27,6 +29,9 @@ function App() {
 
     //Создание стейта выбранной карточки
     const [selectedCard, setSelectedCard] = useState(null);
+
+    //Создание стейта выбранной карточки для удаления
+    const [cardToDelete, setCardToDelete] = useState(null);
 
     //Получение данных текущего пользователя
     React.useEffect(() => {
@@ -50,6 +55,12 @@ function App() {
             })
     }, [])
 
+    //Функция обновления стейт-переменной выбранной карточки
+    const handleCardClick = (card) => {
+        setIsImagePopupOpen(true);
+        setSelectedCard(card);
+    }
+
 
     const handleCardLike = (card) => {
         //Проверка наличия лайка на карточке
@@ -59,17 +70,6 @@ function App() {
         api.changeLikeCardStatus(card._id, !isLiked)
             .then((newCard) => {
                 setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
-    //Функция удаления карточки и обновления стейта
-    const handleCardDelete = (card) => {
-        api.deleteCard(card._id)
-            .then(() => {
-                const updateCards = cards.filter((c) => c._id !== card._id);
-                setCards(updateCards);
             })
             .catch((error) => {
                 console.log(error);
@@ -93,11 +93,9 @@ function App() {
         setIsEditAvatarPopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditProfilePopupOpen(false);
+        setIsConfirmDeletePopup(false)
+        setIsImagePopupOpen(false);
         setSelectedCard(null);
-    }
-    //Функция обновления стейт-переменной выбранной карточки
-    const handleCardClick = (card) => {
-        setSelectedCard(card);
     }
     //Функция отправки и обновления данных пользователя
     const handleUpdateUser = (newUserData) => {
@@ -133,6 +131,26 @@ function App() {
             })
     }
 
+    //Функция показа PopupConfirm и установка карточки в стейт переменную
+    const handleClickCardDeleteBtn = (card) => {
+        setIsConfirmDeletePopup(true);
+        setCardToDelete(card);
+    }
+
+    //Функция удаления карточки и обновления стейта
+    const handleCardDelete = () => {
+        api.deleteCard(cardToDelete._id)
+            .then(() => {
+                const updateCards = cards.filter((c) => c._id !== cardToDelete._id);
+                setCards(updateCards);
+                setIsConfirmDeletePopup(false);
+                setSelectedCard(null)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="body">
@@ -144,16 +162,16 @@ function App() {
                     onCardClick={handleCardClick}
                     onCardLike={handleCardLike}
                     cards={cards}
-                    onCardDelete={handleCardDelete}
+                    onClickCardDeleteBtn={handleClickCardDeleteBtn}
                 />
 
                 <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
                 <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
                 <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
-                <PopupWithForm title='Вы уверены?' name='delete-submit' textBtnSave='Да' />
+                <ConfirmDeletePopup isOpen={isConfirmDeletePopup} onClose={closeAllPopups} onSubmit={handleCardDelete} card={selectedCard} />
 
-                <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+                <ImagePopup card={selectedCard} onClose={closeAllPopups} isOpen={isImagePopupOpen} />
 
                 <Footer />
             </div>

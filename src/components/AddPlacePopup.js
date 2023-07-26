@@ -1,36 +1,69 @@
 import PopupWithForm from "./PopupWithForm";
-import { React, useRef, useEffect } from "react";
+import { React, useEffect } from "react";
+
+import { useFormValidation } from "../hooks/useFormValidation";
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isPreloading }) {
+  const { values, errors, isValid, handleChange, resetForm } =
+    useFormValidation({});
 
-    //Создание рефов для инпут полей
-    const placeInputRef = useRef();
-    const linkInputRef = useRef();
+  //Обработчик сабмита формы
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onAddPlace(values);
+  };
 
-    //Функция получения значений inputs через рефы
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onAddPlace({
-            title: placeInputRef.current.value,
-            link: linkInputRef.current.value,
-        })
-    }
+  //Сброс формы
+  useEffect(() => {
+    resetForm();
+  }, [isOpen, resetForm]);
 
-    useEffect(() => {
-        placeInputRef.current.value = null;
-        linkInputRef.current.value = null;
-    })
-
-    return (
-        <PopupWithForm title='Новое место' name='add-cards' isOpen={isOpen} onClose={onClose} textBtnSave={isPreloading ? 'Создаем...' : 'Сохранить'} onSubmit={handleSubmit}>
-            <input className="pop-up__form-input pop-up__form-input_input_place" id="place-input" name="title"
-                type="text" placeholder="Название" required minLength="2" maxLength="30" ref={placeInputRef} />
-            <span className="pop-up__form-input-error pop-up__form-place-input-error"></span>
-            <input className="pop-up__form-input pop-up__form-input_input_link" id="link-input" name="link" type="url"
-                placeholder="Ссылка на картинку" required ref={linkInputRef} />
-            <span className="pop-up__form-input-error pop-up__form-link-input-error"></span>
-        </PopupWithForm>
-    )
+  return (
+    <PopupWithForm
+      title="Новое место"
+      name="add-cards"
+      isOpen={isOpen}
+      onClose={onClose}
+      textBtnSave={isPreloading ? "Создаем..." : "Сохранить"}
+      onSubmit={handleSubmit}
+      isDisabled={!isValid}
+    >
+      <input
+        className={
+          errors.title
+            ? "pop-up__form-input pop-up__form-input_input_place pop-up__form-input_type_error"
+            : "pop-up__form-input pop-up__form-input_input_place"
+        }
+        id="place-input"
+        name="title"
+        type="text"
+        placeholder="Название"
+        required
+        minLength="2"
+        maxLength="30"
+        onChange={handleChange}
+      />
+      <span className="pop-up__form-input-error pop-up__form-place-input-error">
+        {errors.title}
+      </span>
+      <input
+        className={
+          errors.link
+            ? "pop-up__form-input pop-up__form-input_input_link pop-up__form-input_type_error"
+            : "pop-up__form-input pop-up__form-input_input_link"
+        }
+        id="link-input"
+        name="link"
+        type="url"
+        placeholder="Ссылка на картинку"
+        required
+        onChange={handleChange}
+      />
+      <span className="pop-up__form-input-error pop-up__form-link-input-error">
+        {errors.link}
+      </span>
+    </PopupWithForm>
+  );
 }
 
 export default AddPlacePopup;

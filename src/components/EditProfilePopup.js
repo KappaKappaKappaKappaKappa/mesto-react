@@ -4,7 +4,12 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 import { useFormValidation } from "../hooks/useFormValidation";
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, isPreloading }) {
+function EditProfilePopup({
+  isOpen,
+  onClose,
+  onUpdateUser,
+  isPreloading,
+}) {
   const { values, errors, isValid, handleChange, resetForm } =
     useFormValidation({});
 

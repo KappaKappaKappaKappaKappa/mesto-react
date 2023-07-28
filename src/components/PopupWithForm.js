@@ -1,3 +1,5 @@
+import { useClosePopup } from "../hooks/useClosePopup";
+
 function PopupWithForm({
   title,
   name,
@@ -8,6 +10,7 @@ function PopupWithForm({
   onSubmit,
   isDisabled,
 }) {
+  useClosePopup(isOpen, onClose);
   return (
     <section
       className={`pop-up pop-up_show_${name} ${isOpen ? "pop-up_opened" : ""}`}

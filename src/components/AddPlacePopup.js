@@ -3,7 +3,12 @@ import { React, useEffect } from "react";
 
 import { useFormValidation } from "../hooks/useFormValidation";
 
-function AddPlacePopup({ isOpen, onClose, onAddPlace, isPreloading }) {
+function AddPlacePopup({
+  isOpen,
+  onClose,
+  onAddPlace,
+  isPreloading,
+}) {
   const { values, errors, isValid, handleChange, resetForm } =
     useFormValidation({});
 

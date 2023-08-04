@@ -1,0 +1,25 @@
+.pop-up__tootltip-img {
+    all: unset;
+    width: 120px;
+    height: 120px;
+    margin-top: 24px;
+}
+
+.pop-up__tootltip-title {
+  all: unset;
+  color: #000;
+  text-align: center;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  max-width: 358px;
+  margin-bottom: 60px;
+}
+
+.pop-up__tooltip-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}

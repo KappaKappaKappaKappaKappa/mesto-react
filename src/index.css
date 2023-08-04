@@ -9,7 +9,6 @@
 /* CONTENT */
 @import url("./blocks/content/content.css");
 
-
 /* PROFILE */
 @import url("./blocks/profile/profile.css");
 @import url("./blocks/profile/__avatar/profile__avatar.css");
@@ -37,8 +36,8 @@
 
 @import url("./blocks/card/__trash/card__trash.css");
 
-@import url('./blocks/card/__like-numbers/card__like-numbers.css');
-@import url('./blocks/card/__like-container/card__like-container.css');
+@import url("./blocks/card/__like-numbers/card__like-numbers.css");
+@import url("./blocks/card/__like-container/card__like-container.css");
 
 /* FOOTER */
 @import url("./blocks/footer/footer.css");
@@ -70,6 +69,6 @@
 @import url("./blocks/pop-up/_show/pop-up_show_delete-submit.css");
 @import url("./blocks/pop-up/__container/_open/pop-up__container_open_submit.css");
 
-@import url('./blocks/pop-up/__form-title/_type/pop-up__form-title_type_delete.css');
+@import url("./blocks/pop-up/__form-title/_type/pop-up__form-title_type_delete.css");
 
-@import url('./blocks/#root/root.css');
+@import url("./blocks/#root/root.css");

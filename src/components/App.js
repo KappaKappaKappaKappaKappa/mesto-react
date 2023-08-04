@@ -9,14 +9,23 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup.js";
 import AddPlacePopup from "./AddPlacePopup.js";
 import ConfirmDeletePopup from "./ConfirmDeletePopup.js";
+import { Route, Routes } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
+import InfoTooltip from "./InfoTooltip";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
+  // const [loggedIn, setLoggedIn] = useState();
+
   //Создание стейт-переменных открытия-закрытия popup'ов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmDeletePopup, setIsConfirmDeletePopup] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+
+  const [loggedIn, setLoggedIn] = useState(true);
 
   //Создание стейта текущего пользователя
   const [currentUser, setCurrentUser] = useState({
@@ -182,15 +191,27 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="body">
         <Header />
-        <Main
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-          onEditAvatar={handleEditAvatarClick}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          cards={cards}
-          onClickCardDeleteBtn={handleClickCardDeleteBtn}
-        />
+        <Routes>
+          <Route path="/sign-up" element={<Register />} />
+          <Route path="/sign-in" element={<Login />} />
+
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute
+                loggedIn={loggedIn}
+                element={Main}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                cards={cards}
+                onClickCardDeleteBtn={handleClickCardDeleteBtn}
+              />
+            }
+          ></Route>
+        </Routes>
 
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}

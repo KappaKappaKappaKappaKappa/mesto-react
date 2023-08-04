@@ -1,0 +1,44 @@
+.header__wrapper {
+  display: flex;
+  text-align: right;
+  gap: 24px;
+}
+
+.header__user-email {
+  all: unset;
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 22px;
+  align-self: center;
+}
+
+.header__logout {
+  all: unset;
+  color: #a9a9a9;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  align-self: center;
+}
+
+.header__logout:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.header__auth-link {
+  all: unset;
+  color: #fff;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.header__auth-link:hover {
+  cursor: pointer;
+  opacity: 0.6;
+}

@@ -1,0 +1,18 @@
+.login-register__already-login {
+  all: unset;
+  cursor: pointer;
+}
+
+.login-register__already-login:hover {
+  opacity: 0.6;
+}
+
+.login-register__already-title {
+  all: unset;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
